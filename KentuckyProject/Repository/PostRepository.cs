@@ -14,6 +14,7 @@ namespace KentuckyWebService.Repository
         UserRepository user = new UserRepository();
         LikeRepository like = new LikeRepository();
         FavoriteRepository favorite = new FavoriteRepository();
+        ReportRepository report = new ReportRepository();
 
         public Post SelectOne(int id)
         {
@@ -21,20 +22,20 @@ namespace KentuckyWebService.Repository
             {
                 OpenConnection();
                 
-                Cmd = new SqlCommand("select * from Post where Postid=@id", Con);                
+                Cmd = new SqlCommand("select * from Post where PostID=@id", Con);                
                 Cmd.Parameters.AddWithValue("@id", id);                
                 Dr = Cmd.ExecuteReader();
                 post = null;
 
                 if (Dr.Read())
                 {
-                    post = new Models.Post();
+                    post = new Post();
                     
-                    post.postid = Convert.ToInt32(Dr["Postid"]);
+                    post.PostID = Convert.ToInt32(Dr["PostID"]);
                     post.Text = Convert.ToString(Dr["Text"]);
                     post.Color = Convert.ToString(Dr["Color"]);
-                    post.User = user.SelectOneAnon(Convert.ToInt32(Dr["User_id"]));
-                    post.Likes = like.GetLikes(Convert.ToInt32(Dr["Postid"]));
+                    post.User = user.SelectOneAnon(Convert.ToInt32(Dr["User_ID"]));
+                    post.Likes = like.GetLikes(Convert.ToInt32(Dr["PostID"]));
                 }                
                 return post;
             }
@@ -63,13 +64,13 @@ namespace KentuckyWebService.Repository
                 {
                     post = new Post();
 
-                    post.postid = Convert.ToInt32(Dr["Postid"]);
+                    post.PostID = Convert.ToInt32(Dr["PostID"]);
                     post.Text = Convert.ToString(Dr["Text"]);
                     post.Color = Convert.ToString(Dr["Color"]);
-                    post.User = user.SelectOneAnon(Convert.ToInt32(Dr["User_id"]));
-                    post.Likes = like.GetLikes(Convert.ToInt32(Dr["Postid"]));
-                    post.Favorites = favorite.GetFavorites(Convert.ToInt32(Dr["Postid"]));
-                    // post.Reports = 
+                    post.User = user.SelectOneAnon(Convert.ToInt32(Dr["User_ID"]));
+                    post.Likes = like.GetLikes(Convert.ToInt32(Dr["PostID"]));
+                    post.Favorites = favorite.GetFavorites(Convert.ToInt32(Dr["PostID"]));
+                    post.Reports = report.GetReports(Convert.ToInt32(Dr["PostID"]));
 
                     posts.Add(post);
                 }
@@ -95,7 +96,7 @@ namespace KentuckyWebService.Repository
 
                 Cmd = new SqlCommand("insert into [Post](User_id, Text, Color) values(@User_id, @Text, @Color)", Con);
 
-                Cmd.Parameters.AddWithValue("@User_id", post.User.Userid);
+                Cmd.Parameters.AddWithValue("@User_id", post.User.UserID);
                 Cmd.Parameters.AddWithValue("@Text", post.Text);
                 Cmd.Parameters.AddWithValue("@Color", post.Color);
 
@@ -105,6 +106,29 @@ namespace KentuckyWebService.Repository
             catch (Exception ex)
             {
                 throw new Exception("Erro ao inserir post: " + ex.Message);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+
+        public int GetCountPostsOfUser(int id)
+        {
+            try
+            {
+                OpenConnection();
+                Cmd = new SqlCommand("SELECT COUNT(User_ID) FROM [Post] WHERE User_ID=@id", Con);
+                Cmd.Parameters.AddWithValue("@id", id);
+
+                int count = (Int32)Cmd.ExecuteScalar();
+
+                return count;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao solicitar likes: " + ex.Message);
             }
             finally
             {

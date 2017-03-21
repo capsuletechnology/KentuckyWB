@@ -22,12 +22,16 @@ namespace KentuckyWebService.Controllers
         // GET: api/Like/5
         public string Get(int id)
         {
+            Like like = new Like();
+            like.PostUserID = 1;
+            likeBusiness.CreateLike(like);
             return "value";
         }
 
         // POST: api/Like
         public void Post(Like like)
         {
+           // likeBusiness.CreateLike(like);
         }
 
         // PUT: api/Like/5

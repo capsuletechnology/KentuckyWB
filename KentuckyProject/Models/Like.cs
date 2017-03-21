@@ -7,9 +7,9 @@ namespace KentuckyWebService.Models
 {
     public class Like
     {
-        public int Likeid { get; set; }
+        public int LikeID { get; set; }
         public Post Post { get; set; }
         public User User { get; set; }
-        public int postUserid { get; set; }
+        public int PostUserID { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace KentuckyWebService.Repository
             {
                 OpenConnection();
 
-                Cmd = new SqlCommand("select * from [User] where Userid=@id", Con);
+                Cmd = new SqlCommand("select * from [User] where UserID=@id", Con);
                 Cmd.Parameters.AddWithValue("@id", id);
                 Dr = Cmd.ExecuteReader();
                 user = null;
@@ -28,11 +28,12 @@ namespace KentuckyWebService.Repository
                 {
                     user = new User();
 
-                    user.Userid = Convert.ToInt32(Dr["Userid"]);
+                    user.UserID = Convert.ToInt32(Dr["UserID"]);
                     user.Rating = Convert.ToDouble(Dr["Rating"]);
+                    user.Nickname = Convert.ToString(Dr["Nickname"]);
                     //user.UserFullName = Convert.ToString(Dr["UserFullName"]);
                     //user.Email = Convert.ToString(Dr["Email"]);
-                    //user.Telefone = Convert.ToString(Dr["Telefone"]);
+                    //user.Telefone = Convert.ToString(Dr["Phone"]);
                     //user.Login = login.SelectOne(Convert.ToInt32(Dr["Login_id"]));
                 }
                 return user;
@@ -53,7 +54,7 @@ namespace KentuckyWebService.Repository
             {
                 OpenConnection();
 
-                Cmd = new SqlCommand("select * from [User] where Userid=@id", Con);
+                Cmd = new SqlCommand("select * from [User] where UserID=@id", Con);
                 Cmd.Parameters.AddWithValue("@id", id);
                 Dr = Cmd.ExecuteReader();
                 user = null;
@@ -62,10 +63,11 @@ namespace KentuckyWebService.Repository
                 {
                     user = new User();
 
-                    user.Userid = Convert.ToInt32(Dr["Userid"]);
+                    user.UserID = Convert.ToInt32(Dr["UserID"]);
                     user.UserFullName = Convert.ToString(Dr["UserFullName"]);
+                    user.Nickname = Convert.ToString(Dr["Nickname"]);
                     user.Email = Convert.ToString(Dr["Email"]);
-                    user.Phone = Convert.ToString(Dr["Telefone"]);
+                    user.Phone = Convert.ToString(Dr["Phone"]);
                     //user.Login = login.SelectOne(Convert.ToInt32(Dr["Login_id"]));
                 }
                 return user;
@@ -86,7 +88,7 @@ namespace KentuckyWebService.Repository
             {
                 OpenConnection();
 
-                Cmd = new SqlCommand("select * from [User] where Userid=@id", Con);
+                Cmd = new SqlCommand("select * from [User] where UserID=@id", Con);
                 Cmd.Parameters.AddWithValue("@id", id);
                 Dr = Cmd.ExecuteReader();
                 user = null;
@@ -95,11 +97,12 @@ namespace KentuckyWebService.Repository
                 {
                     user = new User();
 
-                    user.Userid = Convert.ToInt32(Dr["Userid"]);
+                    user.UserID = Convert.ToInt32(Dr["UserID"]);
                     user.UserFullName = Convert.ToString(Dr["UserFullName"]);
+                    user.Nickname = Convert.ToString(Dr["Nickname"]);
                     user.Email = Convert.ToString(Dr["Email"]);
-                    user.Phone = Convert.ToString(Dr["Telefone"]);
-                    user.Login = login.SelectOne(Convert.ToInt32(Dr["Login_id"]));
+                    user.Phone = Convert.ToString(Dr["Phone"]);
+                    user.Login = login.SelectOne(Convert.ToInt32(Dr["Login_ID"]));
                 }
                 return user;
             }
@@ -128,11 +131,12 @@ namespace KentuckyWebService.Repository
                 {
                     user = new User();
 
-                    user.Userid = Convert.ToInt32(Dr["Userid"]);
+                    user.UserID = Convert.ToInt32(Dr["UserID"]);
                     user.UserFullName = Convert.ToString(Dr["UserFullName"]);
+                    user.Nickname = Convert.ToString(Dr["Nickname"]);
                     user.Email = Convert.ToString(Dr["Email"]);
-                    user.Phone = Convert.ToString(Dr["Telefone"]);
-                    user.Login = login.SelectOne(Convert.ToInt32(Dr["Login_id"]));
+                    user.Phone = Convert.ToString(Dr["Phone"]);
+                    user.Login = login.SelectOne(Convert.ToInt32(Dr["Login_ID"]));
                 }
                 return user;
             }
@@ -154,13 +158,14 @@ namespace KentuckyWebService.Repository
 
                 OpenConnection();
 
-                Cmd = new SqlCommand("insert into [User](UserFullName, Email, Telefone, Rating, Login_id) values(@UserFullName, @Email, @Telefone, @Rating, @Login_id)", Con);
+                Cmd = new SqlCommand("insert into [User](UserFullName, Nickname, Email, Phone, Rating, Login_ID) values(@UserFullName, @Nickname, @Email, @Phone, @Rating, @Login_ID)", Con);
 
                 Cmd.Parameters.AddWithValue("@UserFullName", user.UserFullName);
                 Cmd.Parameters.AddWithValue("@Email", user.Email);
-                Cmd.Parameters.AddWithValue("@Telefone", user.Phone);
+                Cmd.Parameters.AddWithValue("@Nickname", user.Nickname);
+                Cmd.Parameters.AddWithValue("@Phone", user.Phone);
                 Cmd.Parameters.AddWithValue("@Rating", user.Rating);
-                Cmd.Parameters.AddWithValue("@Login_id", (login.SelectOneWNick(user.Login)).Loginid);
+                Cmd.Parameters.AddWithValue("@Login_ID", (login.SelectOneWNick(user.Login)).LoginID);
 
                 Cmd.ExecuteNonQuery();
                 

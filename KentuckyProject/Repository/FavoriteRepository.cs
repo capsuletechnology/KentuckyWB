@@ -17,11 +17,11 @@ namespace KentuckyWebService.Repository
             try
             {
                 OpenConnection();
-                Cmd = new SqlCommand("select * from [favorite] where Post_id=@id", Con);
+                Cmd = new SqlCommand("select * from [favorite] where Post_ID=@id", Con);
                 Cmd.Parameters.AddWithValue("@id", id);
                 Dr = Cmd.ExecuteReader();
 
-                List<Favorite> posts = new List<Favorite>();
+                List<Favorite> favorites = new List<Favorite>();
                 favorite = null;
 
                 while (Dr.Read())
@@ -30,14 +30,37 @@ namespace KentuckyWebService.Repository
                     favorite.Post = new Post();
                     favorite.User = new User();
 
-                    favorite.Favoriteid = Convert.ToInt32(Dr["favoriteid"]);
-                    favorite.Post.postid = Convert.ToInt32(Dr["Post_id"]);
-                    favorite.User.Userid = Convert.ToInt32(Dr["User_id"]);
+                    favorite.FavoriteID = Convert.ToInt32(Dr["favoriteID"]);
+                    favorite.Post.PostID = Convert.ToInt32(Dr["Post_ID"]);
+                    favorite.User.UserID = Convert.ToInt32(Dr["User_ID"]);
 
-                    posts.Add(favorite);
+                    favorites.Add(favorite);
                 }
 
-                return posts;
+                return favorites;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao solicitar favoritos: " + ex.Message);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+
+        public int GetCountUserId(int id)
+        {
+            try
+            {
+                OpenConnection();
+                Cmd = new SqlCommand("SELECT COUNT(PostUserID) FROM [Favorite] WHERE PostUserID=@id", Con);
+                Cmd.Parameters.AddWithValue("@id", id);
+
+                int count = (Int32)Cmd.ExecuteScalar();
+
+                return count;
 
             }
             catch (Exception ex)

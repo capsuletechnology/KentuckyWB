@@ -18,7 +18,7 @@ namespace KentuckyWebService.Repository
             {
                 OpenConnection();
 
-                Cmd = new SqlCommand("select * from Login where Loginid=@id", Con);
+                Cmd = new SqlCommand("select * from Login where LoginID=@id", Con);
                 Cmd.Parameters.AddWithValue("@id", id);
                 Dr = Cmd.ExecuteReader();
                 login = null;
@@ -27,7 +27,7 @@ namespace KentuckyWebService.Repository
                 {
                     login = new Login();
 
-                    login.Loginid = Convert.ToInt32(Dr["Loginid"]);
+                    login.LoginID = Convert.ToInt32(Dr["LoginID"]);
                     login.User = Convert.ToString(Dr["UserNick"]);
                     login.Password = Convert.ToString(Dr["Password"]);                    
                 }
@@ -58,7 +58,7 @@ namespace KentuckyWebService.Repository
                 {
                     login = new Login();
 
-                    login.Loginid = Convert.ToInt32(Dr["Loginid"]);
+                    login.LoginID = Convert.ToInt32(Dr["LoginID"]);
                     login.User = Convert.ToString(Dr["UserNick"]);
                     login.Password = Convert.ToString(Dr["Password"]);
                 }
