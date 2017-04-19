@@ -24,7 +24,7 @@ namespace Repository
         {
             try
             {
-                Con = new SqlConnection("Data Source=DESKTOP-KDN5KRK\\SQLEXPRESS;Initial Catalog=kentucky;Integrated Security=True");
+                Con = new SqlConnection("Data Source=SUP02\\SQLEXPRESS;Initial Catalog=kentucky;Integrated Security=True");
                 Con.Open();
             }
             catch (Exception ex)
